@@ -1,52 +1,15 @@
 name: Unity Test Build Release
 
 on:
-  #pull_request:
-  #  branches: [ main ]
-  workflow_dispatch:   # przycisk "Run workflow" w Actions tab
+  workflow_dispatch:
+  pull_request:
+    branches: [dev, main]
+  push:
+    branches: [main]
 
 jobs:
-  test:
-    runs-on: self-hosted
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          lfs: true
-
-      - name: Cache Library
-        uses: actions/cache@v4
-        with:
-          path: Library
-          key: Library-${{ hashFiles('**/Packages/manifest.json') }}
-          restore-keys: Library-
-
-      - name: Run Unity tests
-        shell: pwsh
-        run: |
-          $unityPath = "C:\Program Files\Unity\Hub\Editor\6000.3.8f1\Editor\Unity.exe"
-          Write-Output "Unity path: $unityPath"
-          if (-not (Test-Path $unityPath)) { 
-            Get-ChildItem "C:\Program Files\Unity\Hub\Editor" -Recurse -Name "Unity.exe"
-            exit 1 
-          }
-          & $unityPath -batchmode -projectPath "." -runTests -testResults "test-results.xml" -testPlatform editmode -logFile "unity-test.log" -quit -nographics
-          Write-Output "Test exit code: $LASTEXITCODE"
-          Get-Content "unity-test.log" -Tail 20
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-
-      - name: Upload test results
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-results
-          path: |
-            test-results.xml
-            unity-test.log
-
   build:
-    needs: test
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -60,51 +23,45 @@ jobs:
           key: Library-${{ hashFiles('**/Packages/manifest.json') }}
           restore-keys: Library-
 
-      - name: Build Unity project
-        shell: pwsh
-        run: |
-          $unityPath = "C:\Program Files\Unity\Hub\Editor\6000.3.8f1\Editor\Unity.exe"
-          Write-Output "Unity path: $unityPath"
-          if (-not (Test-Path $unityPath)) { exit 1 }
-          $buildPath = "build/CI-Build.exe"
-          New-Item -ItemType Directory -Force -Path "build" | Out-Null
-          Write-Output "Building to: $buildPath"
-          & $unityPath -batchmode -projectPath "." -buildWindowsPlayer $buildPath -logFile "unity-build.log" -quit -nographics
-          Write-Output "Build exit code: $LASTEXITCODE"
-          if ($LASTEXITCODE -ne 0) { 
-            Get-Content "unity-build.log" -Tail 50
-            exit $LASTEXITCODE 
-          }
-          ls build
+      - name: Build project
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+        with:
+          unityVersion: 6000.3.8f1
+          targetPlatform: StandaloneWindows64
+          buildsPath: build
+          buildName: CI-Build
 
-      - name: Upload build
+      - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Build-Windows
-          path: build
+          name: Build-StandaloneWindows64
+          path: build/StandaloneWindows64
 
   release:
     needs: build
-    runs-on: self-hosted
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.base_ref == 'main')
+    runs-on: ubuntu-latest
     permissions:
       contents: write
-    environment: release-env
     steps:
       - uses: actions/download-artifact@v4
         with:
-          name: Build-Windows
+          name: Build-StandaloneWindows64
           path: build/
 
-      - name: Pack build into zip
-        shell: pwsh
-        run: Compress-Archive -Path "build/*" -DestinationPath "build/CI-Build-Windows.zip" -Force
+      - name: Zip build
+        run: zip -r CI-Build-Windows.zip build/
 
       - uses: softprops/action-gh-release@v2
         with:
-          tag_name: v0.1.0-dev-${{ github.sha }}
-          name: Pre-release dev-${{ github.sha }}
-          prerelease: true
+          tag_name: ${{ github.event_name == 'pull_request' && format('prerelease-pr-{0}', github.event.pull_request.number) || format('release-{0}', github.sha) }}
+          name: ${{ github.event_name == 'pull_request' && format('Prerelease PR #{0}', github.event.pull_request.number) || format('Release {0}', github.sha) }}
+          prerelease: ${{ github.event_name == 'pull_request' }}
           generate_release_notes: true
-          files: build/CI-Build-Windows.zip
+          files: CI-Build-Windows.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
