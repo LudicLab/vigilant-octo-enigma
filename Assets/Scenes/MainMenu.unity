@@ -2045,8 +2045,8 @@ Transform:
   m_GameObject: {fileID: 2031978986}
   serializedVersion: 2
   m_LocalRotation: {x: 0.006826444, y: 0.00007182464, z: -0.0054376964, w: 0.9999619}
-  m_LocalPosition: {x: -11.4, y: 0.2, z: -15.1}
-  m_LocalScale: {x: 92.30814, y: 0.2609, z: 79.61482}
+  m_LocalPosition: {x: -11.5, y: -8.3, z: -15.2}
+  m_LocalScale: {x: 92.30814, y: 17.313429, z: 79.61482}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1985906081}
@@ -2680,7 +2680,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SpringForce
   targetRb: {fileID: 4827896859958376450}
   pressForce: 50
-  forceStrength: 5
+  forceStrength: 0.64
   pressThreshold: 0.15
 --- !u!145 &4827896859958376452
 SpringJoint:
