@@ -6,8 +6,8 @@ using System.Collections.Generic;
 
 public class Initializer : MonoBehaviour
 {
-    public SceneAsset loadingScreenScene;
-    public SceneAsset mainMenuScene;
+    public SceneReference loadingScreenScene;
+    public SceneReference mainMenuScene;
 
     [SerializeField] private List<SceneTask> taskList;
 
