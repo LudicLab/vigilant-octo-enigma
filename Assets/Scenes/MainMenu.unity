@@ -3717,10 +3717,10 @@ SpringJoint:
   m_Anchor: {x: 0, y: 0.009591821, z: 0}
   m_AutoConfigureConnectedAnchor: 1
   m_ConnectedAnchor: {x: 0, y: 0, z: 0}
-  m_Spring: 150
+  m_Spring: 500
   m_Damper: 10
   m_MinDistance: 0
-  m_MaxDistance: 0.5
+  m_MaxDistance: 0
   m_Tolerance: 0.025
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
