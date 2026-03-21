@@ -845,6 +845,7 @@ GameObject:
   - component: {fileID: 397687645}
   - component: {fileID: 397687647}
   - component: {fileID: 397687646}
+  - component: {fileID: 397687648}
   m_Layer: 5
   m_Name: Next Button
   m_TagString: Untagged
@@ -906,6 +907,35 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 397687644}
   m_CullTransparentMesh: 1
+--- !u!114 &397687648
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 397687644}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.EventSystems.EventTrigger
+  m_Delegates:
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1690214864}
+          m_TargetAssemblyTypeName: MusicScene, Assembly-CSharp
+          m_MethodName: PlayNextTrack
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &402847768
 GameObject:
   m_ObjectHideFlags: 0
@@ -1020,6 +1050,7 @@ GameObject:
   - component: {fileID: 410632820}
   - component: {fileID: 410632822}
   - component: {fileID: 410632821}
+  - component: {fileID: 410632823}
   m_Layer: 5
   m_Name: Previous Button
   m_TagString: Untagged
@@ -1081,6 +1112,35 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 410632819}
   m_CullTransparentMesh: 1
+--- !u!114 &410632823
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 410632819}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.EventSystems.EventTrigger
+  m_Delegates:
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1690214864}
+          m_TargetAssemblyTypeName: MusicScene, Assembly-CSharp
+          m_MethodName: PlayPreviousTrack
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &437491619
 GameObject:
   m_ObjectHideFlags: 0
@@ -2796,6 +2856,8 @@ MonoBehaviour:
   LobbyMusicAudioSource: {fileID: 0}
   LobbySongsList:
   - {fileID: 8300000, guid: 8f39dde1e4f4e354fa3559483759d7e0, type: 3}
+  - {fileID: 8300000, guid: 4518f4c4ab05d67428f4933e84b2d288, type: 3}
+  - {fileID: 8300000, guid: d2be1ee7bc7e1914491a9af77d2056e9, type: 3}
   isPaused: 0
 --- !u!95 &1690214865
 Animator:

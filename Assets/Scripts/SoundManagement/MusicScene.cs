@@ -46,6 +46,37 @@ public class MusicScene : MonoBehaviour
     public void StopMusic()
     {
         LobbyMusicAudioSource.Stop();
-        isPaused = true;   // STOP = muzyka nie gra, UI pokaże PLAY
+        isPaused = true;   
+    }
+    public void PlayNextTrack()
+    {
+        for(int i = 0; i < LobbySongsList.Length; i++)
+        {
+            if(LobbyMusicAudioSource.clip == LobbySongsList[i])
+            {
+                int nextIndex = (i + 1) % LobbySongsList.Length;
+                LobbyMusicAudioSource.clip = LobbySongsList[nextIndex];
+                LobbyMusicAudioSource.Play();
+                songName.text = "";
+                textAnim.Play("ShowText");
+                break;
+            }
+        }
+    }
+
+    public void PlayPreviousTrack()
+    {
+        for(int i = 0; i<LobbySongsList.Length; i++)
+        {
+            if(LobbyMusicAudioSource.clip == LobbySongsList[i])
+            {
+                int previousIndex = (i - 1 + LobbySongsList.Length) % LobbySongsList.Length;
+                LobbyMusicAudioSource.clip = LobbySongsList[previousIndex];
+                LobbyMusicAudioSource.Play();
+                songName.text = "";
+                textAnim.Play("ShowText");
+                break;
+            }
+        }
     }
 }
