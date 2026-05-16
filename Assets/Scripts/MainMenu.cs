@@ -1,11 +1,16 @@
+
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+
 
 public class MainMenu : MonoBehaviour
 {
+    public SceneReference playScene;
+
     public void MainMenuPlayButton()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        SceneManager.LoadScene(playScene.name);
     }
     public void MainMenuQuitButton()
     {

@@ -28,6 +28,7 @@ Wybierz branch do którego chcesz merge'ować (1), branch z którego chcesz merg
 * Import projektu do unity ![](img/5.png)![](img/6.png) ![](img/7.png)
 
 ## 2.Rozpoczęcie Pracy
+* Robisz Pull na dev!!!
 * Tworzysz nowy branch![](img/8.png)
 * Przesyłasz branch do repozytorium![](img/9.png)
 * Rozpoczynasz prace na projekcie (**WAŻNE aby maksymalnie jedna osoba pracowała nad daną sceną w unity projekt, bo spowoduje to konflikty**)![](img/10.png)
