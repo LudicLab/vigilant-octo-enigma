@@ -27,10 +27,19 @@ public class MusicScene : MonoBehaviour
 
     void PlayRandomMusic()
     {
+        if (LobbySongsList == null || LobbySongsList.Length == 0) return;
+
         LobbyMusicAudioSource.clip = LobbySongsList[Random.Range(0, LobbySongsList.Length)];
         LobbyMusicAudioSource.Play();
-        songName.text = "";
-        textAnim.Play("ShowText");
+        
+        if (songName != null && LobbyMusicAudioSource.clip != null)
+        {
+            songName.text = LobbyMusicAudioSource.clip.name;
+        }
+        if (textAnim != null)
+        {
+            textAnim.Play("ShowText");
+        }
     }
 
     public void ToggleMusic(bool pause)
