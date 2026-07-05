@@ -12,9 +12,9 @@ public class MusicScene : MonoBehaviour
 
     void Start()
     {
-        songName = GetComponent<TextMeshProUGUI>();
-        textAnim = GetComponent<Animator>();
-        LobbyMusicAudioSource = GetComponent<AudioSource>();
+        if (songName == null) songName = GetComponent<TextMeshProUGUI>();
+        if (textAnim == null) textAnim = GetComponent<Animator>();
+        if (LobbyMusicAudioSource == null) LobbyMusicAudioSource = GetComponent<AudioSource>();
     }
 
     void Update()
