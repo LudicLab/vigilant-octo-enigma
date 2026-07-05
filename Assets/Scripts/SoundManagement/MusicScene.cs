@@ -19,7 +19,7 @@ public class MusicScene : MonoBehaviour
 
     void Update()
     {
-        if (!LobbyMusicAudioSource.isPlaying && !isPaused)
+        if (LobbyMusicAudioSource != null && !LobbyMusicAudioSource.isPlaying && !isPaused)
         {
             PlayRandomMusic();
         }
