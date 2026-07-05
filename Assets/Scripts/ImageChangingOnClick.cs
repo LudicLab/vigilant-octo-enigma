@@ -10,6 +10,8 @@ public class ImageChangingOnClick : MonoBehaviour
 
     public void Toggle()
     {
+        if (musicScene == null || targetImage == null) return;
+
         bool paused = musicScene.isPaused;
 
         if (paused)

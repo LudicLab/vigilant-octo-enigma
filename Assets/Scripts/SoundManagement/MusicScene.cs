@@ -31,7 +31,7 @@ public class MusicScene : MonoBehaviour
 
         LobbyMusicAudioSource.clip = LobbySongsList[Random.Range(0, LobbySongsList.Length)];
         LobbyMusicAudioSource.Play();
-        
+
         if (songName != null && LobbyMusicAudioSource.clip != null)
         {
             songName.text = LobbyMusicAudioSource.clip.name;
@@ -57,7 +57,7 @@ public class MusicScene : MonoBehaviour
         LobbyMusicAudioSource.Stop();
         isPaused = true;   
     }
-        private void PlayTrack(int index)
+    private void PlayTrack(int index)
     {
         if (LobbySongsList == null || LobbySongsList.Length == 0) return;
         if (index < 0 || index >= LobbySongsList.Length) return;
