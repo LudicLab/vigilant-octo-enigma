@@ -2,9 +2,13 @@ name: Unity Test
 
 on:
   push:
-    branches: [ dev ]
-  #pull_request:
-  #  branches: [ dev ]
+    branches: [dev]
+  pull_request:
+    branches: [dev, main]
+
+concurrency:
+  group: test-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   test:
@@ -20,9 +24,8 @@ jobs:
         uses: actions/cache@v4
         with:
           path: Library
-          key: Library-${{ hashFiles('**/Packages/manifest.json') }}
-          restore-keys: |
-            Library-
+          key: Library-6000.3.8f1-${{ hashFiles('**/Packages/manifest.json') }}
+          restore-keys: Library-6000.3.8f1-
 
       - name: Run EditMode and PlayMode tests
         uses: game-ci/unity-test-runner@v4
@@ -34,3 +37,10 @@ jobs:
           unityVersion: 6000.3.8f1
           testMode: all
           artifactsPath: test-results
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results-${{ github.run_number }}
+          path: test-results
