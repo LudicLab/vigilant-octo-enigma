@@ -19,6 +19,8 @@ public class MusicScene : MonoBehaviour
 
     void Update()
     {
+        if (LobbySongsList == null || LobbySongsList.Length == 0) return;
+
         if (LobbyMusicAudioSource != null && !LobbyMusicAudioSource.isPlaying && !isPaused)
         {
             PlayRandomMusic();
@@ -70,7 +72,10 @@ public class MusicScene : MonoBehaviour
         if (index < 0 || index >= LobbySongsList.Length) return;
         if (LobbyMusicAudioSource == null) return;
 
-        LobbyMusicAudioSource.clip = LobbySongsList[index];
+        AudioClip track = LobbySongsList[index];
+        if (track == null) return;
+
+        LobbyMusicAudioSource.clip = track;
         LobbyMusicAudioSource.Play();
 
         if (songName != null && LobbyMusicAudioSource.clip != null)
