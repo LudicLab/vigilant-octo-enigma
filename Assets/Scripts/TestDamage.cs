@@ -6,10 +6,7 @@ public class TestDamage : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-
-        Health health = other.GetComponent<Health>();
-
-        if (health != null)
+        if (other.TryGetComponent<Health>(out var health))
         {
             health.TakeDamage(damage);
         }

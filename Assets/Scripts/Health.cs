@@ -9,22 +9,24 @@ public class Health : MonoBehaviour
     
     [SerializeField]
     private bool IsLiving = true;
-    void Start()
+    void Awake()
     {
         currentHealth = health;
     }
 
     public void startBleeding() 
     {
-        InvokeRepeating("Bleeding", 1f, 1f); //powtarzanie krwawienia co sekunde
+        InvokeRepeating(nameof(Bleeding), 1f, 1f); //powtarzanie krwawienia co sekunde
     }
 
     public void stopBleeding() 
     {
-        CancelInvoke("Bleeding");
+        CancelInvoke(nameof(Bleeding));
     }
     public void TakeDamage(int damage)
     {
+        if(damage <= 0) return;
+
         currentHealth -= damage;
 
         if (currentHealth <= 0)
