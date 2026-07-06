@@ -31,7 +31,10 @@ public class Health : MonoBehaviour
         {
             currentHealth = 0; //funkcja na umieranie czy cos ewentualnie animacja lub ragdoll, ale to juz pozniej
             IsLiving = false;
+            // Debug.Log($"Player died"); // debug
         }
+
+        // Debug.Log($"player took {damage} damage, currently at {currentHealth}"); // debug
     }
 
     void Bleeding() //funkcja na krwawienie 
