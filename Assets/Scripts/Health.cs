@@ -34,6 +34,7 @@ public class Health : MonoBehaviour
             currentHealth = 0; //funkcja na umieranie czy cos ewentualnie animacja lub ragdoll, ale to juz pozniej
             IsLiving = false;
             // Debug.Log($"Player died"); // debug
+            Die();
         }
 
         // Debug.Log($"player took {damage} damage, currently at {currentHealth}"); // debug
@@ -42,5 +43,13 @@ public class Health : MonoBehaviour
     void Bleeding() //funkcja na krwawienie 
     {
         TakeDamage(bleedingDamage);
+    }
+
+    private void Die()
+    {
+        Debug.Log($"{gameObject.name} died!");
+
+        // Temporary
+        Destroy(gameObject); // TODO: handle player and non-player death
     }
 }
