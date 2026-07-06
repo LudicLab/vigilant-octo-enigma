@@ -12,14 +12,16 @@ public class MusicScene : MonoBehaviour
 
     void Start()
     {
-        songName = GetComponent<TextMeshProUGUI>();
-        textAnim = GetComponent<Animator>();
-        LobbyMusicAudioSource = GetComponent<AudioSource>();
+        if (songName == null) songName = GetComponent<TextMeshProUGUI>();
+        if (textAnim == null) textAnim = GetComponent<Animator>();
+        if (LobbyMusicAudioSource == null) LobbyMusicAudioSource = GetComponent<AudioSource>();
     }
 
     void Update()
     {
-        if (!LobbyMusicAudioSource.isPlaying && !isPaused)
+        if (LobbySongsList == null || LobbySongsList.Length == 0) return;
+
+        if (LobbyMusicAudioSource != null && !LobbyMusicAudioSource.isPlaying && !isPaused)
         {
             PlayRandomMusic();
         }
@@ -27,15 +29,26 @@ public class MusicScene : MonoBehaviour
 
     void PlayRandomMusic()
     {
+        if (LobbyMusicAudioSource == null || LobbySongsList == null || LobbySongsList.Length == 0) return;
+
         LobbyMusicAudioSource.clip = LobbySongsList[Random.Range(0, LobbySongsList.Length)];
         LobbyMusicAudioSource.Play();
-        songName.text = "";
-        textAnim.Play("ShowText");
+
+        if (songName != null && LobbyMusicAudioSource.clip != null)
+        {
+            songName.text = LobbyMusicAudioSource.clip.name;
+        }
+        if (textAnim != null)
+        {
+            textAnim.Play("ShowText");
+        }
     }
 
     public void ToggleMusic(bool pause)
     {
         isPaused = pause;
+
+        if (LobbyMusicAudioSource == null) return;
 
         if (pause)
             LobbyMusicAudioSource.Pause();
@@ -45,38 +58,66 @@ public class MusicScene : MonoBehaviour
 
     public void StopMusic()
     {
-        LobbyMusicAudioSource.Stop();
-        isPaused = true;   
-    }
-    public void PlayNextTrack()
-    {
-        for(int i = 0; i < LobbySongsList.Length; i++)
+        if (LobbyMusicAudioSource != null)
         {
-            if(LobbyMusicAudioSource.clip == LobbySongsList[i])
+            LobbyMusicAudioSource.Stop();
+        }
+        isPaused = true;
+    }
+
+    private void PlayTrack(int index)
+    {
+        // early-return simplification requested in review
+        if (LobbySongsList == null || LobbySongsList.Length == 0) return;
+        if (index < 0 || index >= LobbySongsList.Length) return;
+        if (LobbyMusicAudioSource == null) return;
+
+        AudioClip track = LobbySongsList[index];
+        if (track == null) return;
+
+        LobbyMusicAudioSource.clip = track;
+        LobbyMusicAudioSource.Play();
+
+        if (songName != null && LobbyMusicAudioSource.clip != null)
+        {
+            songName.text = LobbyMusicAudioSource.clip.name;
+        }
+
+        if (textAnim != null)
+        {
+            textAnim.Play("ShowText");
+        }
+    }
+
+    // helper to extract duplicated index lookup logic (per review)
+    private int GetCurrentTrackIndex()
+    {
+        if (LobbyMusicAudioSource == null || LobbyMusicAudioSource.clip == null || LobbySongsList == null) return -1;
+        for (int i = 0; i < LobbySongsList.Length; i++)
+        {
+            if (LobbyMusicAudioSource.clip == LobbySongsList[i])
             {
-                int nextIndex = (i + 1) % LobbySongsList.Length;
-                LobbyMusicAudioSource.clip = LobbySongsList[nextIndex];
-                LobbyMusicAudioSource.Play();
-                songName.text = "";
-                textAnim.Play("ShowText");
-                break;
+                return i;
             }
         }
+        return -1;
+    }
+
+    public void PlayNextTrack()
+    {
+        if (LobbySongsList == null || LobbySongsList.Length == 0) return;
+
+        int currentIndex = GetCurrentTrackIndex();
+        int nextIndex = currentIndex == -1 ? 0 : (currentIndex + 1) % LobbySongsList.Length;
+        PlayTrack(nextIndex);
     }
 
     public void PlayPreviousTrack()
     {
-        for(int i = 0; i<LobbySongsList.Length; i++)
-        {
-            if(LobbyMusicAudioSource.clip == LobbySongsList[i])
-            {
-                int previousIndex = (i - 1 + LobbySongsList.Length) % LobbySongsList.Length;
-                LobbyMusicAudioSource.clip = LobbySongsList[previousIndex];
-                LobbyMusicAudioSource.Play();
-                songName.text = "";
-                textAnim.Play("ShowText");
-                break;
-            }
-        }
+        if (LobbySongsList == null || LobbySongsList.Length == 0) return;
+
+        int currentIndex = GetCurrentTrackIndex();
+        int previousIndex = currentIndex <= 0 ? LobbySongsList.Length - 1 : currentIndex - 1;
+        PlayTrack(previousIndex);
     }
 }

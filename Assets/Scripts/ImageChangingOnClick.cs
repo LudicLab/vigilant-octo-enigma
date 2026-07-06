@@ -10,17 +10,20 @@ public class ImageChangingOnClick : MonoBehaviour
 
     public void Toggle()
     {
+        // keep null-checks to avoid NRE (added in PR)
+        if (musicScene == null || targetImage == null) return;
+
         bool paused = musicScene.isPaused;
 
         if (paused)
         {
-            // muzyka jest zapauzowana → klik = PLAY
+            // muzyka jest zapauzowana  klik = PLAY
             musicScene.ToggleMusic(false);
             targetImage.sprite = PauseSprite;
         }
         else
         {
-            // muzyka gra → klik = PAUSE
+            // muzyka gra  klik = PAUSE
             musicScene.ToggleMusic(true);
             targetImage.sprite = PlaySprite;
         }
