@@ -149,8 +149,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Initializer
   loadingScreenScene:
-    sceneAsset: {fileID: 102900000, guid: d9d8930ba026c014ca8ecc830de03bc0, type: 3}
-    sceneName: Loading_empty
+    sceneAsset: {fileID: 102900000, guid: 55f3faa345e6cdd45a73c2bf418105cf, type: 3}
+    sceneName: intro_
   mainMenuScene:
     sceneAsset: {fileID: 102900000, guid: 2d1b1f16d2ee28048b52a785833713b3, type: 3}
     sceneName: MainMenu
