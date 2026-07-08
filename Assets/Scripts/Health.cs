@@ -9,6 +9,8 @@ public class Health : MonoBehaviour
     
     [SerializeField]
     private bool IsLiving = true;
+    [SerializeField]
+    private Interaction interaction;
     void Awake()
     {
         currentHealth = health;
@@ -48,8 +50,8 @@ public class Health : MonoBehaviour
     private void Die()
     {
         Debug.Log($"{gameObject.name} died!");
-
+        interaction.Run(gameObject);
         // Temporary
-        Destroy(gameObject); // TODO: handle player and non-player death
+        // Destroy(gameObject); // TODO: handle player and non-player death
     }
 }
