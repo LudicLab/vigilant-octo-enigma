@@ -1,5 +1,5 @@
 using System;
-using NUnit.Framework.Constraints;
+using System.Collections.Generic; 
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -10,6 +10,10 @@ public class PlayerInteraction : MonoBehaviour
     Transform cam;
     Rigidbody? grabbedObject = null;
     float? grabbedDistance = null;
+    Dictionary<string, float> penetration = new Dictionary<string, float> {
+            {"Wall",  0.0f},
+            {"Explosive", 0.0f}
+        };
 
     [SerializeField] float grabMaxDistance = 4.0f;
     [SerializeField] float grabMoveSpeed = 20f;
@@ -40,7 +44,7 @@ public class PlayerInteraction : MonoBehaviour
     {
         float distance = Mathf.Infinity;
         // float distance = 1.5f;
-        int damage = 100;
+        float damage = 100.0f;
         int bullets = 1;
         float spread = 0.0f;
         for (int i = 0; i < bullets; i++)
@@ -54,6 +58,9 @@ public class PlayerInteraction : MonoBehaviour
             Color rayColor = Color.white;
 
             RaycastHit[] hits = Physics.RaycastAll(cam.position, direction, distance);
+
+            Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
+
             foreach (RaycastHit hit in hits)
             {
                 Debug.Log($"Hit {hit.collider.gameObject.name} at distance {hit.distance}");
@@ -62,6 +69,18 @@ public class PlayerInteraction : MonoBehaviour
                     health.TakeDamage(damage);
                     rayColor = Color.yellow;
                 }
+                Debug.Log(hit.collider.gameObject.tag);
+                float multiplier;
+                if(penetration.TryGetValue(hit.collider.gameObject.tag, out multiplier))
+                {
+                    damage *= multiplier;
+                }
+                
+                if(damage <= 0.1)
+                {
+                    break;
+                }
+
             }
 
             Debug.DrawRay(cam.position, direction * Math.Min(distance, 1000), rayColor, 7.5f);

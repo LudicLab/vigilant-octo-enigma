@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Wall
   - PhysicsObject
+  - Explosive
   layers:
   - Default
   - TransparentFX
