@@ -976,6 +976,8 @@ MonoBehaviour:
   health: 100
   bleedingDamage: 0
   IsLiving: 1
+  interaction: {fileID: 0}
+  jsonParams: 
 --- !u!1 &2868671313934425354
 GameObject:
   m_ObjectHideFlags: 0
@@ -1097,6 +1099,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1135413087434585131}
+  - component: {fileID: 6040176621631940322}
   m_Layer: 0
   m_Name: TestPlace
   m_TagString: Untagged
@@ -1125,6 +1128,21 @@ Transform:
   - {fileID: 195015353198490305}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6040176621631940322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2916081596289895354}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a6a39c46bf52104ba8efe3100bce3f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: FishNet.Runtime::FishNet.Object.EmptyNetworkBehaviour
+  _componentIndexCache: 0
+  _addedNetworkObject: {fileID: 0}
+  _networkObjectCache: {fileID: 0}
 --- !u!1 &3310199431550684928
 GameObject:
   m_ObjectHideFlags: 0

@@ -3637,8 +3637,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MainMenu
   playScene:
-    sceneAsset: {fileID: 102900000, guid: 8124e5870f4fd4c779e7a5f994e84ad1, type: 3}
-    sceneName: OutdoorsScene
+    sceneAsset: {fileID: 102900000, guid: c9f4e0f861647ab4b8b08d6d331a5ce7, type: 3}
+    sceneName: NetworkUI
 --- !u!64 &4827896859958376449
 MeshCollider:
   m_ObjectHideFlags: 0
