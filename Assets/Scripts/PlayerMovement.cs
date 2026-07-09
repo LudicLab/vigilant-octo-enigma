@@ -1,8 +1,10 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using FishNet.Object;
 using TMPro;
+using System.Globalization;
 
-public class CSMovement : MonoBehaviour
+public class CSMovement : NetworkBehaviour
 {
     [Header("Movement")]
     public float maxSpeed = 7f;
@@ -46,18 +48,31 @@ public class CSMovement : MonoBehaviour
 
 
     // =========================================
-    void Start()
+    public override void OnStartClient()
+{
+    if (IsOwner)
     {
-        controller = GetComponent<CharacterController>();
-        originalHeight = controller.height;
-        originalCamLocalPos = cam.localPosition;
+        GetComponent<PlayerInput>().enabled = true;
 
         Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
+    else
+    {
+        GetComponent<PlayerInput>().enabled = false;
+        cam.gameObject.SetActive(false);
+    }
+
+    controller = GetComponent<CharacterController>();
+    originalHeight = controller.height;
+    originalCamLocalPos = cam.localPosition;
+}
 
     // =========================================
     void Update()
     {
+        if(!IsOwner)
+            return;
         HandleCrouch();
         Move();
         UpdateUI();
@@ -77,6 +92,8 @@ public class CSMovement : MonoBehaviour
 
     public void OnLook(InputValue v)
     {
+        if(!IsOwner)
+            return;
         Vector2 look = v.Get<Vector2>();
 
         camPitch -= look.y * sensitivity * Time.deltaTime;
