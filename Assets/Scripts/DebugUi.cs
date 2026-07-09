@@ -15,9 +15,9 @@ public class DebugStats : MonoBehaviour
         float memory = (float)System.GC.GetTotalMemory(false) / 1024f / 1024f;
 
         statsText.text =
-            $"FPS: {fps:0.}\n" +
-            $"Frame Time: {deltaTime * 1000.0f:0.0} ms\n" +
-            $"Memory: {memory:0.0} MB\n";
+            $"FPS: {fps:0.}\t" +
+            $"Frame Time: {deltaTime * 1000.0f:0.0} ms \t" +
+            $"Memory: {memory:0.0} MB\t";
     }
 
     void Awake()

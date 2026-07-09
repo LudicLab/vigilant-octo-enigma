@@ -2,16 +2,24 @@ using UnityEngine;
 
 public class Health : MonoBehaviour
 {
-    public int maxHealth = 100;
-    public int health = 100;
-    private int currentHealth;
+    public float maxHealth = 100;
+    public float health = 100;
+    private float currentHealth;
     public int bleedingDamage;
     
     [SerializeField]
     private bool IsLiving = true;
+    [SerializeField]
+    private Interaction interaction;
+    [SerializeField]
+    string jsonParams; // json is ok here because this converts only when passed (interaction ran) - **ONCE**
     void Awake()
     {
         currentHealth = health;
+        if(interaction != null)
+        {
+            interaction.Prepare(gameObject, jsonParams);
+        }
     }
 
     public void startBleeding() 
@@ -23,9 +31,9 @@ public class Health : MonoBehaviour
     {
         CancelInvoke(nameof(Bleeding));
     }
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
-        if(damage <= 0) return;
+        if(!IsLiving || damage <= 0) return;
 
         currentHealth -= damage;
 
@@ -34,6 +42,7 @@ public class Health : MonoBehaviour
             currentHealth = 0; //funkcja na umieranie czy cos ewentualnie animacja lub ragdoll, ale to juz pozniej
             IsLiving = false;
             // Debug.Log($"Player died"); // debug
+            Die();
         }
 
         // Debug.Log($"player took {damage} damage, currently at {currentHealth}"); // debug
@@ -42,5 +51,14 @@ public class Health : MonoBehaviour
     void Bleeding() //funkcja na krwawienie 
     {
         TakeDamage(bleedingDamage);
+    }
+
+    private void Die()
+    {
+        Debug.Log($"{gameObject.name} died!");
+        if(interaction != null)
+        {
+            interaction.Run(gameObject);
+        }
     }
 }
