@@ -222,6 +222,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1842359966529110836, guid: 7291906f693226743878c9f969dd7934, type: 3}
+      propertyPath: throwStrength
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 1842359966529110836, guid: 7291906f693226743878c9f969dd7934, type: 3}
+      propertyPath: grabMaxDistance
+      value: 6.5
+      objectReference: {fileID: 0}
     - target: {fileID: 3426820439045362432, guid: 7291906f693226743878c9f969dd7934, type: 3}
       propertyPath: m_Name
       value: Player
@@ -491,7 +499,7 @@ MonoBehaviour:
   bleedingDamage: 0
   IsLiving: 1
   interaction: {fileID: 8626530617389629632, guid: cef40b1fb1ae15045ae134ead9731fdc, type: 3}
-  jsonParams: '{"scale": 0.3}'
+  jsonParams: '{"scale": 20}'
 --- !u!54 &1048838834
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -718,7 +726,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 651590964142525339, guid: 087639bd684fa8c4592231fefb68ad5f, type: 3}
       propertyPath: m_TagString
-      value: Untagged
+      value: Explosive
       objectReference: {fileID: 0}
     - target: {fileID: 1135413087434585131, guid: 087639bd684fa8c4592231fefb68ad5f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -766,7 +774,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2916081596289895354, guid: 087639bd684fa8c4592231fefb68ad5f, type: 3}
       propertyPath: m_TagString
-      value: Explosive
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 5231445926073648821, guid: 087639bd684fa8c4592231fefb68ad5f, type: 3}
       propertyPath: interaction

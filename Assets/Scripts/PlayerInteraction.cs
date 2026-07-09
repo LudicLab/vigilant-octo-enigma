@@ -1,5 +1,6 @@
 using System;
-using System.Collections.Generic; 
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,37 +10,73 @@ public class PlayerInteraction : MonoBehaviour
 {
     Transform cam;
     Rigidbody? grabbedObject = null;
-    float? grabbedDistance = null;
     Dictionary<string, float> penetration = new Dictionary<string, float> {
             {"Wall",  0.0f},
             {"Explosive", 0.0f}
         };
 
-    [SerializeField] float grabMaxDistance = 4.0f;
+    [SerializeField] float grabMaxDistance = 6.5f;
     [SerializeField] float grabMoveSpeed = 20f;
     [SerializeField] float grabMaxSpeed = 15f;
+    [SerializeField] float grabDistance = 6f;
+    [SerializeField] float throwStrength = 20f;
 
     void Awake()
     {
         cam = transform.Find("Camera");
     }
 
-    void Start()
-    {
-
-    }
-
     void FixedUpdate()
     {
-        if (grabbedObject is Rigidbody grObject && grabbedDistance is float grDistance)
+        if (grabbedObject is Rigidbody && grabbedObject != null)
         {
-            Vector3 targetPosition = cam.position + cam.forward * grDistance;
+            Vector3 targetPosition = cam.position + ( cam.forward * grabDistance + cam.right * -1.5f + cam.up * -0.6f );
             Vector3 toTarget = targetPosition - grabbedObject.position;
 
             grabbedObject.linearVelocity = Vector3.ClampMagnitude(toTarget * grabMoveSpeed, grabMaxSpeed);
+        } else
+        {
+            grabbedObject = null;
         }
     }
 
+    public void OnInteract(InputValue v)
+    {
+        if (grabbedObject is Rigidbody)
+        {
+            grabbedObject = null;
+            Debug.Log("dropped held item");
+        }
+        else
+        {
+            Vector3 direction = cam.transform.forward;
+            RaycastHit hit;
+            Color color = Color.green;
+
+            if (Physics.Raycast(cam.position, direction, out hit, grabMaxDistance))
+            {
+                Debug.Log($"hit rigidbody {hit.rigidbody?.gameObject}");
+                grabbedObject = hit.rigidbody;
+                color = Color.blue;
+            }
+
+            Debug.Log($"{hit.distance}");
+
+            Debug.DrawRay(cam.position, direction * grabMaxDistance, color, 7.5f);
+        }
+    }
+    public void OnSecondary(InputValue v)
+    {
+        if(grabbedObject)
+        {
+            grabbedObject.linearVelocity = cam.forward * throwStrength  ;
+            grabbedObject = null;
+        } else
+        {
+            // scope
+            Debug.Log($"scoped with current weapon {null}");
+        }
+    }
     public void OnAttack(InputValue v)
     {
         float distance = Mathf.Infinity;
@@ -88,29 +125,4 @@ public class PlayerInteraction : MonoBehaviour
 
     }
 
-    public void OnInteract(InputValue v)
-    {
-        if (grabbedObject is Rigidbody)
-        {
-            grabbedObject = null;
-            grabbedDistance = null;
-            Debug.Log("dropped held item");
-        }
-        else
-        {
-            Vector3 direction = cam.transform.forward;
-            RaycastHit hit;
-            Color color = Color.green;
-
-            if (Physics.Raycast(cam.position, direction, out hit, grabMaxDistance))
-            {
-                Debug.Log($"hit rigidbody {hit.rigidbody?.gameObject}");
-                grabbedObject = hit.rigidbody;
-                grabbedDistance = hit.distance;
-                color = Color.blue;
-            }
-
-            Debug.DrawRay(cam.position, direction * grabMaxDistance, color, 7.5f);
-        }
-    }
 }
