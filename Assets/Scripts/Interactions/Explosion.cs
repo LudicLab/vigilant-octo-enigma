@@ -20,7 +20,8 @@ class Explosion : Interaction
 
     public override void Prepare(GameObject owner, string jsonParams)
     {
-        pending[owner] = JsonUtility.FromJson<Data>(jsonParams);
+        var data = string.IsNullOrEmpty(jsonParams) ? JsonUtility.FromJson<Data>(jsonParams) :  null;
+        pending[owner] = data ?? new Data { scale = 1f };
     }
 
     public override void Run(GameObject gameObject)

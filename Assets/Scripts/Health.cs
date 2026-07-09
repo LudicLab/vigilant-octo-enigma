@@ -16,7 +16,10 @@ public class Health : MonoBehaviour
     void Awake()
     {
         currentHealth = health;
-        interaction.Prepare(gameObject, jsonParams);
+        if(interaction != null)
+        {
+            interaction.Prepare(gameObject, jsonParams);
+        }
     }
 
     public void startBleeding() 
@@ -30,7 +33,7 @@ public class Health : MonoBehaviour
     }
     public void TakeDamage(float damage)
     {
-        if(damage <= 0) return;
+        if(!IsLiving || damage <= 0) return;
 
         currentHealth -= damage;
 
@@ -52,9 +55,10 @@ public class Health : MonoBehaviour
 
     private void Die()
     {
-        
-
         Debug.Log($"{gameObject.name} died!");
-        interaction.Run(gameObject);
+        if(interaction != null)
+        {
+            interaction.Run(gameObject);
+        }
     }
 }

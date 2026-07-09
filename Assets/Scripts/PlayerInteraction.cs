@@ -20,15 +20,16 @@ public class PlayerInteraction : MonoBehaviour
     [SerializeField] float grabMaxSpeed = 15f;
     [SerializeField] float grabDistance = 6f;
     [SerializeField] float throwStrength = 20f;
+    [SerializeField] new GameObject camera;
 
     void Awake()
     {
-        cam = transform.Find("Camera");
+        cam = camera.transform;
     }
 
     void FixedUpdate()
     {
-        if (grabbedObject is Rigidbody && grabbedObject != null)
+        if (grabbedObject != null)
         {
             Vector3 targetPosition = cam.position + ( cam.forward * grabDistance + cam.right * -1.5f + cam.up * -0.6f );
             Vector3 toTarget = targetPosition - grabbedObject.position;
@@ -42,7 +43,7 @@ public class PlayerInteraction : MonoBehaviour
 
     public void OnInteract(InputValue v)
     {
-        if (grabbedObject is Rigidbody)
+        if (grabbedObject != null)
         {
             grabbedObject = null;
             Debug.Log("dropped held item");
@@ -98,10 +99,23 @@ public class PlayerInteraction : MonoBehaviour
 
             Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
 
+            
+
             foreach (RaycastHit hit in hits)
             {
+                if (hit.collider.transform.root == transform.root)
+                {
+                    continue;
+                }
+
+                if(damage <= 0.1)
+                {
+                    break;
+                }
+
                 Debug.Log($"Hit {hit.collider.gameObject.name} at distance {hit.distance}");
-                if (hit.collider.TryGetComponent<Health>(out var health))
+                var health = hit.collider.GetComponentInParent<Health>();
+                if (health != null)
                 {
                     health.TakeDamage(damage);
                     rayColor = Color.yellow;
@@ -113,10 +127,7 @@ public class PlayerInteraction : MonoBehaviour
                     damage *= multiplier;
                 }
                 
-                if(damage <= 0.1)
-                {
-                    break;
-                }
+                
 
             }
 

@@ -6,6 +6,6 @@ class Destroy : Interaction
     public override void Prepare(GameObject owner, string jsonParams) {}
     public override void Run(GameObject gameObject)
     {
-        Destroy(gameObject);
+        UnityEngine.Object.Destroy(gameObject);
     }
 }
