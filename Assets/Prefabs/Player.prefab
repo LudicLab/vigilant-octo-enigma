@@ -271,6 +271,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6478fbe985fd8a443a27a1a4f6d6d2aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInteraction
+  grabMaxDistance: 6.5
+  grabMoveSpeed: 20
+  grabMaxSpeed: 15
+  grabDistance: 6
+  throwStrength: 20
+  camera: {fileID: 7740726392031096331}
 --- !u!1 &7740726392031096331
 GameObject:
   m_ObjectHideFlags: 0
